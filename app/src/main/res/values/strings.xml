@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">APN Setup Helper</string>
+    <string name="error_hmdm_connect">This application is a Headwind MDM plugin. Please install APN setup helper through Headwind MDM!</string>
+    <string name="refresh">Refresh</string>
+    <string name="apn_helper_settings">Application settings are not correct\n\n
+    Please ask your administrator setup the following application settings in the Headwind MDM control panel (application com.hmdm.apn):\n\n
+    apn_desc: Human-readable name*\n
+    apn_name: APN name*\n
+    apn_mcc: MCC (country code)*\n
+    apn_mnc: MNC (operator code)*\n
+    apn_proxy_addr: Proxy address\n
+    apn_proxy_port: Proxy port\n
+    apn_user: Authentication username\n
+    apn_password: Password\n\n
+    * These fields are required and cannot be empty or missing.\n\n
+    To remove the APN, add the following parameter to the application settings:\n\n
+    apn_clear: 1\n</string>
+    <string name="apn_setup">The APN has been set up!</string>
+    <string name="please_wait">Loading settings, please wait...!</string>
+    <string name="apn_setup_fail">Failed to set up APN: %s\n\nMake sure Headwind MDM is installed with device owner rights!</string>
+    <string name="apn_cleared">Custom APN settings have been cleared!</string>
+</resources>
