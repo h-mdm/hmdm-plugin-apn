@@ -19,4 +19,6 @@
     <string name="please_wait">Loading settings, please wait...!</string>
     <string name="apn_setup_fail">Failed to set up APN: %s\n\nMake sure Headwind MDM is installed with device owner rights!</string>
     <string name="apn_cleared">Custom APN settings have been cleared!</string>
+    <string name="version_warning">Sorry, but you can only set up a custom APN on Android 9 and above!</string>
+    <string name="close">Close app</string>
 </resources>

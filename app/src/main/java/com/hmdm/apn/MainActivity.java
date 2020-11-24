@@ -4,6 +4,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -15,10 +16,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hmdm.MDMService;
 
+import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,6 +59,21 @@ public class MainActivity extends AppCompatActivity implements MDMService.Result
         textView.setText(R.string.please_wait);
         refreshButton.setVisibility(View.GONE);
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.version_warning)
+                    .setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setCancelable(false)
+                    .create()
+                    .show();
+            return;
+        }
+
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements MDMService.Result
     @Override
     protected void onResume() {
         super.onResume();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return;
+        }
         if (mdmConnected) {
             loadSettings();
         } else {
@@ -162,13 +183,29 @@ public class MainActivity extends AppCompatActivity implements MDMService.Result
         refreshButton.setVisibility(View.GONE);
     }
 
+    private String getProxyAddress(ApnSetting apnSetting) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
+            InetAddress inetAddress = apnSetting.getProxyAddress();
+            if (inetAddress != null) {
+                try {
+                    return inetAddress.getHostAddress();
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        } else {
+            return apnSetting.getProxyAddressAsString();
+        }
+        return null;
+    }
+
     private void reportSuccess(ApnSetting apnSetting) {
         String s = getString(R.string.apn_setup);
         s += "\n\n";
         s += "entryName: " + apnSetting.getEntryName() + "\n";
         s += "apnName: " + apnSetting.getApnName() + "\n";
         s += "operatorNumeric: " + apnSetting.getOperatorNumeric() + "\n";
-        if (apnSetting.getProxyAddressAsString() != null) {
+        if (getProxyAddress(apnSetting) != null) {
             s += "proxyAddr: " + apnSetting.getProxyAddressAsString() + "\n";
         }
         if (apnSetting.getProxyPort() != -1) {
