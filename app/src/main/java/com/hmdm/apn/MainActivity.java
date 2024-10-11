@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements MDMService.Result
         });
 
         mdmService = MDMService.getInstance();
-        registerReceiver(configUpdateReceiver, new IntentFilter(Const.NOTIFICATION_CONFIG_UPDATED));
+        registerReceiver(configUpdateReceiver, new IntentFilter(Const.NOTIFICATION_CONFIG_UPDATED), RECEIVER_EXPORTED);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements MDMService.Result
                 .setProtocol(ApnSetting.PROTOCOL_IPV4V6)
                 .setRoamingProtocol(ApnSetting.PROTOCOL_IPV4V6);
 
-        if (!proxyAddr.equalsIgnoreCase("")) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !proxyAddr.equalsIgnoreCase("")) {
             builder.setProxyAddress(proxyAddr);
         }
         if (!proxyPort.equalsIgnoreCase("")) {
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements MDMService.Result
                     return null;
                 }
             }
-        } else {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             return apnSetting.getProxyAddressAsString();
         }
         return null;
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements MDMService.Result
         s += "entryName: " + apnSetting.getEntryName() + "\n";
         s += "apnName: " + apnSetting.getApnName() + "\n";
         s += "operatorNumeric: " + apnSetting.getOperatorNumeric() + "\n";
-        if (getProxyAddress(apnSetting) != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && getProxyAddress(apnSetting) != null) {
             s += "proxyAddr: " + apnSetting.getProxyAddressAsString() + "\n";
         }
         if (apnSetting.getProxyPort() != -1) {
