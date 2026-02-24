@@ -145,6 +145,24 @@ public class MainActivity extends AppCompatActivity implements MDMService.Result
         String proxyPort = MDMService.Preferences.get(cfgPrefix + Const.PREF_PROXY_PORT, "").trim();
         String user = MDMService.Preferences.get(cfgPrefix + Const.PREF_USER, "").trim();
         String password = MDMService.Preferences.get(cfgPrefix + Const.PREF_PASSWORD, "").trim();
+        String protocolStr = MDMService.Preferences.get(cfgPrefix + Const.PREF_PROTOCOL, "").trim();
+        int protocol = ApnSetting.PROTOCOL_IPV4V6;
+        if (!protocolStr.equals("")) {
+            try {
+                protocol = Integer.parseInt(protocolStr);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        String roamingProtocolStr = MDMService.Preferences.get(cfgPrefix + Const.PREF_ROAMING_PROTOCOL, "").trim();
+        int roamingProtocol = ApnSetting.PROTOCOL_IPV4V6;
+        if (!roamingProtocolStr.equals("")) {
+            try {
+                roamingProtocol = Integer.parseInt(roamingProtocolStr);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         ApnSetting.Builder builder = new ApnSetting.Builder()
                 .setEntryName(entryName)
@@ -152,8 +170,8 @@ public class MainActivity extends AppCompatActivity implements MDMService.Result
                 .setApnTypeBitmask(apnType)
                 .setOperatorNumeric(mcc + mnc)
                 .setCarrierEnabled(true)
-                .setProtocol(ApnSetting.PROTOCOL_IPV4V6)
-                .setRoamingProtocol(ApnSetting.PROTOCOL_IPV4V6);
+                .setProtocol(protocol)
+                .setRoamingProtocol(roamingProtocol);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !proxyAddr.equalsIgnoreCase("")) {
             builder.setProxyAddress(proxyAddr);

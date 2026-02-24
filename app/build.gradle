@@ -1,14 +1,21 @@
 apply plugin: 'com.android.application'
 
+def localProps = new Properties()
+def localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localProps.load(new FileInputStream(localPropsFile))
+}
+
 android {
     compileSdkVersion 34
 
     signingConfigs {
         common {
-            keyAlias 'kiosk'
-            keyPassword 'aGVhZHdpbmRSdWxlS2lvc2s='
+            // Passwords are stored in local.properties
+            keyAlias localProps.getProperty("KEY_ALIAS")
+            keyPassword localProps.getProperty("KEY_PASSWORD")
+            storePassword localProps.getProperty("STORE_PASSWORD")
             storeFile file('keystore/keystore.jks')
-            storePassword 'aGVhZHdpbmRNYWlu'
         }
     }
 
@@ -16,8 +23,8 @@ android {
         applicationId "com.hmdm.apn"
         minSdkVersion 24
         targetSdkVersion 34
-        versionCode 4
-        versionName "1.04"
+        versionCode 5
+        versionName "1.05"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

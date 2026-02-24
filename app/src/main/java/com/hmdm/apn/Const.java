@@ -13,6 +13,8 @@ public class Const {
     public static final String PREF_PROXY_PORT = "apn_proxy_port";
     public static final String PREF_USER = "apn_user";
     public static final String PREF_PASSWORD = "apn_password";
+    public static final String PREF_PROTOCOL = "apn_protocol";
+    public static final String PREF_ROAMING_PROTOCOL = "apn_roaming_protocol";
 
     public static final String PREF_APN_CLEAR = "apn_clear";
 

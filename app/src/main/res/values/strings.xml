@@ -11,7 +11,9 @@
     apn_proxy_addr: Proxy address\n
     apn_proxy_port: Proxy port\n
     apn_user: Authentication username\n
-    apn_password: Password\n\n
+    apn_password: Password\n
+    apn_protocol: 0-4, default 2 (see ApnSettings docs)\n
+    apn_roaming_protocol: 0-4, default 2\n\n
     * These fields are required and cannot be empty or missing.\n\n
     To remove the APN, add the following parameter to the application settings:\n\n
     apn_clear: 1\n</string>
